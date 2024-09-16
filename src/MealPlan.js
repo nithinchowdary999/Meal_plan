@@ -1,15 +1,8 @@
-import React, { useState } from "react";
-import { Card, CardContent, CardHeader } from "./components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader } from './components/ui/card';
+import { Select, SelectItem } from './components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 
 const fixedMeals = [
   {
