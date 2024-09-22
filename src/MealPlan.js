@@ -381,9 +381,7 @@ const MacrosPieChart = ({ macros }) => {
 const MealPlan = () => {
   const [selectedLunch, setSelectedLunch] = useState(lunchOptions[0]);
   const [selectedDinner, setSelectedDinner] = useState(dinnerOptions[0]);
-  const [selectedLowCalorie, setSelectedLowCalorie] = useState(
-    lowCalorieOptions[0]
-  );
+  const [selectedLowCalorie, setSelectedLowCalorie] = useState(lowCalorieOptions[0]);
 
   const calculateTotals = () => {
     let totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
@@ -433,7 +431,42 @@ const MealPlan = () => {
               <MealCard meal={selectedLunch} />
             </CardContent>
           </Card>
-          {/* Repeat similar structure for Dinner Options and Low-Calorie Snack */}
+          <Card className="mb-4 bg-gray-800 border border-red-500">
+            <CardHeader className="font-bold text-red-500">Dinner Options</CardHeader>
+            <CardContent>
+              <Select
+                onValueChange={(value) => setSelectedDinner(dinnerOptions[parseInt(value)])}
+                value={dinnerOptions.findIndex((option) => option.name === selectedDinner.name).toString()}
+                className="mb-2 bg-gray-700 text-white border-red-500"
+              >
+                {dinnerOptions.map((option, index) => (
+                  <SelectItem key={index} value={index.toString()}>
+                    {option.name}
+                  </SelectItem>
+                ))}
+              </Select>
+              <MealCard meal={selectedDinner} />
+            </CardContent>
+          </Card>
+          <Card className="mb-4 bg-gray-800 border border-red-500">
+            <CardHeader className="font-bold text-red-500">Low-Calorie Snack Options</CardHeader>
+            <CardContent>
+              <Select
+                onValueChange={(value) => setSelectedLowCalorie(lowCalorieOptions[parseInt(value)])}
+                value={lowCalorieOptions.findIndex((option) => option.name === selectedLowCalorie.name).toString()}
+                className="mb-2 bg-gray-700 text-white border-red-500"
+              >
+                {lowCalorieOptions.map((option, index) => (
+                  <SelectItem key={index} value={index.toString()}>
+                    {option.name}
+                  </SelectItem>
+                ))}
+              </Select>
+              <div className="text-white mt-2">
+                <span>{selectedLowCalorie.name} ({selectedLowCalorie.amount}): {selectedLowCalorie.calories} cal</span>
+              </div>
+            </CardContent>
+          </Card>
           <Card className="bg-gray-800 border border-red-500">
             <CardHeader className="font-bold text-red-500">Daily Totals</CardHeader>
             <CardContent className="text-white">
