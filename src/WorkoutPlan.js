@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from './components/ui/card';
 import { Select, SelectItem } from './components/ui/select';
 import { FaDumbbell, FaRunning, FaYoutube } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+
 const workoutData = {
     day1: {
       title: "Day 1 (Chest and Triceps)",
@@ -100,19 +102,21 @@ const workoutData = {
   
     const renderExercises = (exercises) => {
       if (!exercises || exercises.length === 0) {
-        return <p className="text-gray-500 italic">No exercises for this day.</p>;
+        return <p className="text-gray-400 italic">No exercises for this day.</p>;
       }
       return (
         <ul className="space-y-4">
           {exercises.map((exercise, index) => (
-            <li key={index} className="bg-white rounded-lg shadow-md p-4 transition duration-300 ease-in-out transform hover:scale-105">
+            <li key={index} className="bg-gray-700 rounded-lg shadow-md p-4 transition duration-300 ease-in-out transform hover:scale-105">
               <div className="flex items-center justify-between">
-                <span className="font-semibold text-lg text-indigo-700">{exercise.name}</span>
-                <a href={exercise.videoLink} target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-700">
-                  <FaYoutube size={24} />
+                <span className="font-semibold text-lg text-red-400 flex items-center">
+                  <FaDumbbell className="mr-2" /> {exercise.name}
+                </span>
+                <a href={exercise.videoLink} target="_blank" rel="noopener noreferrer" className="text-red-400 hover:text-red-300 flex items-center">
+                  <FaYoutube className="mr-1" /> Watch Video
                 </a>
               </div>
-              <div className="mt-2 text-gray-600">
+              <div className="mt-2 text-gray-300">
                 <span>{exercise.sets} sets</span> • <span>{exercise.reps} reps</span> • <span>{exercise.rest} rest</span>
               </div>
             </li>
@@ -123,23 +127,13 @@ const workoutData = {
   
     const selectedWorkout = workoutData[selectedDay];
   
-    if (!selectedWorkout) {
-      return (
-        <div className="p-4 bg-gradient-to-r from-blue-100 to-purple-100 min-h-screen">
-          <h1 className="text-4xl font-bold mb-4 text-center text-indigo-800">Nithin's Workout Plan</h1>
-          <p className="text-center text-red-500">No workout data available for the selected day.</p>
-        </div>
-      );
-    }
-  
     return (
-      <div className="p-4 bg-gradient-to-r from-blue-100 to-purple-100 min-h-screen">
-        <h1 className="text-4xl font-bold mb-6 text-center text-indigo-800">Nithin's Workout Plan</h1>
+      <div className="p-4 bg-gray-900 min-h-screen">
+        <h1 className="text-4xl font-bold mb-6 text-center text-red-600">Nithin's Workout Plan</h1>
         <div className="max-w-3xl mx-auto">
           <Select
             onValueChange={setSelectedDay}
             value={selectedDay}
-            className="mb-6"
           >
             {Object.keys(workoutData).map((day) => (
               <SelectItem key={day} value={day}>
@@ -147,50 +141,60 @@ const workoutData = {
               </SelectItem>
             ))}
           </Select>
-          <Card className="mb-6 overflow-hidden">
-            <CardHeader className="bg-indigo-600 text-white text-xl font-semibold py-4">
-              <div className="flex items-center">
-                <FaDumbbell className="mr-2" />
-                {selectedWorkout.title}
-              </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              {selectedWorkout.warmup && (
-                <div className="mb-6">
-                  <h2 className="text-lg font-semibold mb-2 text-indigo-700">Warm-up</h2>
-                  <p className="text-gray-700">{selectedWorkout.warmup.name} - {selectedWorkout.warmup.duration}</p>
-                  <a href={selectedWorkout.warmup.videoLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline flex items-center mt-2">
-                    <FaYoutube className="mr-1" /> Watch Warm-up Video
-                  </a>
-                </div>
-              )}
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold mb-4 text-indigo-700">Exercises</h2>
-                {renderExercises(selectedWorkout.exercises)}
-              </div>
-              {selectedWorkout.cardio && (
-                <div>
-                  <h2 className="text-lg font-semibold mb-2 text-indigo-700">Cardio</h2>
-                  <div className="bg-white rounded-lg shadow-md p-4">
-                    <div className="flex items-center text-gray-700">
-                      <FaRunning className="mr-2 text-green-500" />
-                      <span>{selectedWorkout.cardio.name} - {selectedWorkout.cardio.duration}</span>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedDay}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Card className="mt-6 overflow-hidden bg-gray-800 border border-red-800">
+                <CardHeader className="bg-red-900 text-white text-xl font-semibold py-4 flex items-center">
+                  <FaDumbbell className="mr-2" /> {selectedWorkout.title}
+                </CardHeader>
+                <CardContent className="p-6">
+                  {selectedWorkout.warmup && (
+                    <div className="mb-6">
+                      <h2 className="text-lg font-semibold mb-2 text-red-400 flex items-center">
+                        <FaDumbbell className="mr-2" /> Warm-up
+                      </h2>
+                      <p className="text-gray-300">{selectedWorkout.warmup.name} - {selectedWorkout.warmup.duration}</p>
+                      <a href={selectedWorkout.warmup.videoLink} target="_blank" rel="noopener noreferrer" className="text-red-400 hover:text-red-300 mt-2 inline-block flex items-center">
+                        <FaYoutube className="mr-1" /> Watch Warm-up Video
+                      </a>
                     </div>
-                    {selectedWorkout.cardio.description && (
-                      <p className="mt-2 text-gray-600">{selectedWorkout.cardio.description}</p>
-                    )}
+                  )}
+                  <div className="mb-6">
+                    <h2 className="text-lg font-semibold mb-4 text-red-400 flex items-center">
+                      <FaDumbbell className="mr-2" /> Exercises
+                    </h2>
+                    {renderExercises(selectedWorkout.exercises)}
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                  {selectedWorkout.cardio && (
+                    <div>
+                      <h2 className="text-lg font-semibold mb-2 text-red-400 flex items-center">
+                        <FaRunning className="mr-2" /> Cardio
+                      </h2>
+                      <div className="bg-gray-700 rounded-lg shadow-md p-4">
+                        <div className="text-white">
+                          <span>{selectedWorkout.cardio.name} - {selectedWorkout.cardio.duration}</span>
+                        </div>
+                        {selectedWorkout.cardio.description && (
+                          <p className="mt-2 text-gray-300">{selectedWorkout.cardio.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     );
   };
   
   export default WorkoutPlan;
-
-
 
 

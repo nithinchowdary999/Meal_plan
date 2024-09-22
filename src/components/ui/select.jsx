@@ -47,25 +47,25 @@ export const Select = ({ onValueChange, children, value }) => {
 
 export const SelectTrigger = ({ children, onClick }) => (
   <button
-    className="w-full p-2 text-left bg-white border rounded-md flex justify-between items-center"
+    className="w-full p-2 text-left bg-gray-800 text-gray-200 border border-red-800 rounded-md flex justify-between items-center hover:bg-gray-700 transition-colors duration-200"
     onClick={onClick}
   >
     {children}
-    <span className="ml-2">▼</span>
+    <span className="ml-2 text-red-800">▼</span>
   </button>
 );
 
 export const SelectValue = ({ children }) => <span>{children}</span>;
 
 export const SelectContent = ({ children }) => (
-  <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
+  <div className="absolute w-full mt-1 bg-gray-800 border border-red-800 rounded-md shadow-lg z-10">
     {children}
   </div>
 );
 
 export const SelectItem = ({ children, value, onSelect }) => (
   <div
-    className="p-2 cursor-pointer hover:bg-gray-100"
+    className="p-2 cursor-pointer hover:bg-gray-700 text-gray-200 transition-colors duration-200"
     onClick={() => onSelect(value)}
   >
     {children}
